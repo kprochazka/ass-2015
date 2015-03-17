@@ -1,0 +1,6 @@
+Leaks
+1 : CPU leak
+2 : Memory leak
+3 : File Handle leak : user_[x]big.jar - 10 vlaken
+
+noddy.jar 4 = main() -> a() -> b() -> c -> main -> 10x c()

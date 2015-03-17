@@ -153,6 +153,7 @@
         <module>cv_2</module>
         <module>cv_3</module>
         <module>cv_4</module>
+        <module>cv_5</module>
     </modules>
 
 </project>
