@@ -1,0 +1,4 @@
+<Person>
+    <Age notnull="true">25</Age>
+    <Name maxlength="5" minlength="1">Kamil Prochazka</Name>
+</Person>
