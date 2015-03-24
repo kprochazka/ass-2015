@@ -8,10 +8,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -42,7 +44,6 @@ public class HomeWorkProtocol implements Runnable, Closeable {
     static final String FIN = "<fin>";
     static final String FLIP_START = "<flip>";
     static final String FLIP_END = "</flip>";
-    static final int LONGEST_TAG_LENGTH = FLIP_END.length();
 
     static final List<String> ALLOWED_ENTITIES = new ArrayList<>(Arrays.asList(HI, FIN, FLIP_START, FLIP_END));
 
@@ -57,6 +58,12 @@ public class HomeWorkProtocol implements Runnable, Closeable {
     public HomeWorkProtocol(Socket clientSocket, Logger logger) {
         this.logger = logger;
         this.clientSocket = clientSocket;
+
+        try {
+            this.clientSocket.setSoTimeout((int) TimeUnit.SECONDS.toMillis(5L));
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), DEFAULT_CHARSET));
@@ -78,11 +85,15 @@ public class HomeWorkProtocol implements Runnable, Closeable {
             // read <hi>
             while (receivedChars.length() < HI.length() && ((inputChar = reader.read()) != -1)) {
                 receivedChars.append((char) inputChar);
+                if (receivedChars.length() > 0) {
+                    if (!receivedChars.toString().startsWith("<")) {
+                        break;
+                    }
+                }
                 tagBuffer.append((char) inputChar);
             }
 
             if (inputChar == -1 || !HI.equals(tagBuffer.toString())) {
-                writer.print("closes");
                 logger.warning("Client doesn't send <hi> start command. Closing connection!");
                 return;
             }
@@ -96,12 +107,16 @@ public class HomeWorkProtocol implements Runnable, Closeable {
                 char character = (char) inputChar;
 
                 if (character == '<') { // start entity tag
-                    if (tagBuffer.length() > 1) {
+                    if (tagBuffer.length() > 0) {
                         // tag name could not contain char '<'
-                        break;
-                    } else {
-                        tagBuffer.append(character);
+                        if (isFlip) {
+                            reverseBuffer.append(tagBuffer.toString());
+                        } else {
+                            writer.write(tagBuffer.toString());
+                        }
+                        tagBuffer = new StringBuilder();
                     }
+                    tagBuffer.append(character);
                 } else if (character == '>' && tagBuffer.length() > 0) { // end entity tag
                     tagBuffer.append(character);
                     String tag = tagBuffer.toString();
@@ -132,7 +147,7 @@ public class HomeWorkProtocol implements Runnable, Closeable {
                 }
             }
 
-            writer.print("closes");
+            writer.print("");
             writer.flush();
             // Close the socket.  We are done with this client!
             logger.info("Closing client at " + clientAddress);
@@ -146,13 +161,15 @@ public class HomeWorkProtocol implements Runnable, Closeable {
 
     @Override
     public void close() {
+        writer.flush();
+        writer.close();
+
         try {
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        writer.flush();
-        writer.close();
+
         try {
             clientSocket.close();
         } catch (IOException e) {

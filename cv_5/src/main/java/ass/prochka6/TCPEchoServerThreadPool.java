@@ -12,9 +12,8 @@ import java.util.logging.Logger;
 
 public class TCPEchoServerThreadPool {
 
-    private static ExecutorService executorService;
-
     public static void main(String[] args) throws IOException {
+        ExecutorService executorService = null;
 
         // Test for correct # of args
         if (args.length != 2) {
@@ -47,10 +46,6 @@ public class TCPEchoServerThreadPool {
         }
 
         executorService.shutdown();
-    }
-
-    static void close() {
-        executorService.shutdownNow();
     }
 
     /**
