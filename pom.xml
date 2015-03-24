@@ -65,6 +65,13 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>cv_5</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
@@ -154,6 +161,7 @@
         <module>cv_3</module>
         <module>cv_4</module>
         <module>cv_5</module>
+        <module>cv_6</module>
     </modules>
 
 </project>
