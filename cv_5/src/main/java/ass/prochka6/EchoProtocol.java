@@ -9,13 +9,13 @@ import java.util.logging.Logger;
 
 public class EchoProtocol implements Runnable {
 
-    private static final int BUFFER_SIZE = 32;
+    static final int BUFFER_SIZE = 32;
 
     private final Logger logger;
     private final Socket clientSocket;
 
-    public EchoProtocol(Socket clntSock, Logger logger) {
-        this.clientSocket = clntSock;
+    public EchoProtocol(Socket clientSocket, Logger logger) {
+        this.clientSocket = clientSocket;
         this.logger = logger;
     }
 
