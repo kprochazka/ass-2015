@@ -16,24 +16,36 @@ public class EchoSelectorProtocol implements TCPProtocol {
 
     @Override
     public void handleAccept(SelectionKey key) throws IOException {
-        SocketChannel clntChan = ((ServerSocketChannel) key.channel()).accept();
-        clntChan.configureBlocking(false); // Must be nonblocking to register
+        SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept();
+        clientChannel.configureBlocking(false); // Must be nonblocking to register
         // Register the selector with new channel for read and attach byte buffer
-        clntChan.register(key.selector(), SelectionKey.OP_READ, ByteBuffer
+        clientChannel.register(key.selector(), SelectionKey.OP_READ, ByteBuffer
             .allocate(bufSize));
     }
 
     @Override
     public void handleRead(SelectionKey key) throws IOException {
         // Client socket channel has pending data
-        SocketChannel clntChan = (SocketChannel) key.channel();
+        SocketChannel clientChannel = (SocketChannel) key.channel();
         ByteBuffer buf = (ByteBuffer) key.attachment();
-        long bytesRead = clntChan.read(buf);
+        long bytesRead = clientChannel.read(buf);
+        indicateWork(bytesRead);
         if (bytesRead == -1) { // Did the other end close?
-            clntChan.close();
+            clientChannel.close();
         } else if (bytesRead > 0) {
             // Indicate via key that reading/writing are both of interest now.
             key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+        }
+    }
+
+    private void indicateWork(long recvMsgSize){
+        // internal work
+        if (recvMsgSize >= 4) { // for quit
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -46,8 +58,8 @@ public class EchoSelectorProtocol implements TCPProtocol {
         // Retrieve data read earlier
         ByteBuffer buf = (ByteBuffer) key.attachment();
         buf.flip(); // Prepare buffer for writing
-        SocketChannel clntChan = (SocketChannel) key.channel();
-        clntChan.write(buf);
+        SocketChannel clientChannel = (SocketChannel) key.channel();
+        clientChannel.write(buf);
         if (!buf.hasRemaining()) { // Buffer completely written?
             // Nothing left, so no longer interested in writes
             key.interestOps(SelectionKey.OP_READ);

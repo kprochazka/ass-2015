@@ -23,11 +23,11 @@ public class TCPServerSelector {
 
         // Create listening socket channel for each port and register selector
         for (String arg : args) {
-            ServerSocketChannel listnChannel = ServerSocketChannel.open();
-            listnChannel.socket().bind(new InetSocketAddress(Integer.parseInt(arg)));
-            listnChannel.configureBlocking(false); // must be nonblocking to register
+            ServerSocketChannel listeningChannel = ServerSocketChannel.open();
+            listeningChannel.socket().bind(new InetSocketAddress(Integer.parseInt(arg)));
+            listeningChannel.configureBlocking(false); // must be nonblocking to register
             // Register selector with channel. The returned key is ignored
-            listnChannel.register(selector, SelectionKey.OP_ACCEPT);
+            listeningChannel.register(selector, SelectionKey.OP_ACCEPT);
         }
 
         // Create a handler that will implement the protocol

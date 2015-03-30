@@ -12,7 +12,13 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
         ctx.flush();
+        ctx.close();
     }
 
     @Override
