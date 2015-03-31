@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Kamil Prochazka
  */
-public class GetUrl {
+public class SslGetUrl {
 
     public static void main(String[] args) throws IOException {
         CloseableHttpClient httpClient = HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
