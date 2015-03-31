@@ -1,6 +1,9 @@
 package ass.prochka6;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,10 +18,27 @@ public class HomeWorkProtocolTest {
 
     private static final int PORT = 8080;
 
-//    @BeforeClass
-//    public static void beforeClass() throws IOException {
-//        TCPEchoServerThreadPool.main(new String[]{"" + PORT, "50"});
-//    }
+    @BeforeClass
+    public static void beforeClass() throws IOException {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    TCPEchoServerThreadPool.main(new String[]{"" + PORT, "50"});
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        thread.setDaemon(true);
+        thread.start();
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void happyDay() {
