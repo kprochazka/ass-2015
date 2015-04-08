@@ -9,24 +9,34 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cv_6</artifactId>
+    <artifactId>semestralka</artifactId>
+
+    <name>Semester work project.</name>
+    <description>
+        High throughput, highly concurrent server supporting HTTP GET for serving static files from root directory.
+        Supporting HTTP BASIC authentication with input collection of known users.
+    </description>
+
+    <properties>
+
+    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>cv_5</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-http</artifactId>
+        </dependency>
 
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -11,9 +11,11 @@
 
     <artifactId>cv_7</artifactId>
 
+    <properties>
+        <juel.version>2.2.7</juel.version>
+    </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -22,17 +24,17 @@
         <dependency>
             <groupId>de.odysseus.juel</groupId>
             <artifactId>juel-impl</artifactId>
-            <version>2.2.7</version>
+            <version>${juel.version}</version>
         </dependency>
         <dependency>
             <groupId>de.odysseus.juel</groupId>
             <artifactId>juel-api</artifactId>
-            <version>2.2.7</version>
+            <version>${juel.version}</version>
         </dependency>
         <dependency>
             <groupId>de.odysseus.juel</groupId>
             <artifactId>juel-spi</artifactId>
-            <version>2.2.7</version>
+            <version>${juel.version}</version>
         </dependency>
 
         <dependency>
@@ -40,8 +42,6 @@
             <artifactId>gson</artifactId>
             <version>2.3.1</version>
         </dependency>
-
-
     </dependencies>
 
 </project>

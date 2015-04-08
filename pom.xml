@@ -16,25 +16,39 @@
         <commons-beanutils.version>1.8.3</commons-beanutils.version>
         <commons-digester3.version>3.2</commons-digester3.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
-        <httpcomponents-httpclient>4.4</httpcomponents-httpclient>
+        <httpcomponents-httpclient>4.4.1</httpcomponents-httpclient>
+        <netty.version>5.0.0.Alpha3-SNAPSHOT</netty.version>
 
-        <!--Test dependencies-->
+        <!-- Test dependencies -->
         <junit.version>4.12</junit.version>
-        <testng.version>6.8.21</testng.version>
         <mockito-all.version>1.10.19</mockito-all.version>
 
+        <!-- Maven build plugin versions -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <surefire.version>2.18.1</surefire.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>maven2</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>netty.snapshots</id>
+            <name>Netty Development Snapshot Repository</name>
+            <url>http://clinker.netty.io/nexus/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -50,12 +64,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>${mockito-all.version}</version>
@@ -66,17 +74,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>cv_5</artifactId>
-                <version>${project.version}</version>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation-api.version}</version>
             </dependency>
-
-
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
@@ -87,10 +94,29 @@
                 <artifactId>commons-digester3</artifactId>
                 <version>${commons-digester3.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${httpcomponents-httpclient}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Cache Framework -->
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>2.10.0</version>
             </dependency>
 
         </dependencies>
@@ -137,11 +163,6 @@
                         <artifactId>surefire-junit47</artifactId>
                         <version>${surefire.version}</version>
                     </dependency>
-                    <!--<dependency>-->
-                    <!--<groupId>org.apache.maven.surefire</groupId>-->
-                    <!--<artifactId>surefire-testng</artifactId>-->
-                    <!--<version>${surefire.version}</version>-->
-                    <!--</dependency>-->
                 </dependencies>
                 <configuration>
                     <parallel>classes</parallel>
@@ -171,6 +192,7 @@
         <module>cv_6</module>
         <module>cv_7</module>
         <module>cv_8</module>
+        <module>semestralka</module>
     </modules>
 
 </project>

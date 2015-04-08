@@ -11,9 +11,6 @@
 
     <artifactId>cv_8</artifactId>
 
-    <properties>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
