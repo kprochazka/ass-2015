@@ -1,5 +1,6 @@
 package ass.prochka6;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URI;
@@ -19,6 +20,7 @@ public class XmlPrinterTest {
     private XmlPrinter printer = new XmlPrinter();
 
     @Test
+    @Ignore
     public void testPersonPrint() throws Exception {
         // test data preparation
         Person person = new Person("Kamil Prochazka", 25);
