@@ -11,13 +11,13 @@
 
     <artifactId>server</artifactId>
 
-    <name>Semester work project.</name>
+    <name>SERVER</name>
     <description>
         High throughput, highly concurrent server supporting HTTP GET for serving static files from root directory.
         Supporting HTTP BASIC authentication with input collection of known users.
     </description>
 
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
 
@@ -38,21 +38,21 @@
     <build>
         <plugins>
             <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>findbugs-maven-plugin</artifactId>-->
-                <!--<version>3.0.0</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>findbugs-check</id>-->
-                        <!--<phase>compile</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>check</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<effort>Max</effort>-->
-                <!--</configuration>-->
+            <!--<groupId>org.codehaus.mojo</groupId>-->
+            <!--<artifactId>findbugs-maven-plugin</artifactId>-->
+            <!--<version>3.0.0</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>findbugs-check</id>-->
+            <!--<phase>compile</phase>-->
+            <!--<goals>-->
+            <!--<goal>check</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--<configuration>-->
+            <!--<effort>Max</effort>-->
+            <!--</configuration>-->
             <!--</plugin>-->
         </plugins>
     </build>
