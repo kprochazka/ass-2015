@@ -1,4 +1,4 @@
-package ass.prochka6.http;
+package ass.prochka6;
 
 /**
  * HTTP Request methods, with the ability to decode a <code>String</code>

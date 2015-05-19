@@ -40,10 +40,10 @@ public class CacheManager {
         }
     }
 
-    class CacheEvictRunnable implements Runnable {
-        final Cache cache;
+    private static class CacheEvictRunnable implements Runnable {
+        private final Cache cache;
 
-        CacheEvictRunnable(Cache cache) {
+        private CacheEvictRunnable(Cache cache) {
             this.cache = cache;
         }
 
@@ -55,7 +55,10 @@ public class CacheManager {
             while ((candidate = cache.evictionQueue.poll()) != null) {
                 Element element = cache.getInternal(candidate.key);
                 if (element != null) {
-                    cache.evictionQueue.offer(new Cache.EvictionCandidate(element.getKey(), element.getExpirationTime()));
+                    boolean offer = cache.evictionQueue.offer(new Cache.EvictionCandidate(element.getKey(), element.getExpirationTime()));
+                    if (!offer) {
+                        LOG.debug("Element ({}) was refused by evictionQueue!", element.getKey());
+                    }
                     return;
                 } else {
                     LOG.debug("Evicted Element ({})", candidate.key);

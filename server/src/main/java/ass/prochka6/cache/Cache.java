@@ -3,6 +3,7 @@ package ass.prochka6.cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -43,8 +44,13 @@ public class Cache {
     public Element get(Object key) {
         Element element = getInternal(key);
 
-        element.updateAccessStatistics();
-        evictionQueue.offer(new EvictionCandidate(element.getKey(), element.getExpirationTime()));
+        if (element != null) {
+            element.updateAccessStatistics();
+            boolean offer = evictionQueue.offer(new EvictionCandidate(element.getKey(), element.getExpirationTime()));
+            if (!offer) {
+                LOG.debug("Element ({}) was refused by evictionQueue!", element.getKey());
+            }
+        }
 
         return element;
     }
@@ -85,7 +91,10 @@ public class Cache {
 
         element.resetAccessStatistics();
         applyDefaultsToElementWithoutLifespanSet(element);
-        evictionQueue.offer(new EvictionCandidate(element.getKey(), element.getExpirationTime()));
+        boolean offer = evictionQueue.offer(new EvictionCandidate(element.getKey(), element.getExpirationTime()));
+        if (!offer) {
+            LOG.debug("Element ({}) was refused by evictionQueue!", element.getKey());
+        }
 
         store.put(element.getKey(), element);
     }
@@ -111,7 +120,10 @@ public class Cache {
 
         element.resetAccessStatistics();
         applyDefaultsToElementWithoutLifespanSet(element);
-        evictionQueue.offer(new EvictionCandidate(element.getKey(), element.getExpirationTime()));
+        boolean offer = evictionQueue.offer(new EvictionCandidate(element.getKey(), element.getExpirationTime()));
+        if (!offer) {
+            LOG.debug("Element ({}) was refused by evictionQueue!", element.getKey());
+        }
 
         store.putIfAbsent(element.getKey(), element);
     }
@@ -131,6 +143,11 @@ public class Cache {
         }
 
         return element != null;
+    }
+
+    public void clear() {
+        store.clear();
+        evictionQueue.clear();
     }
 
     public int size() {
@@ -174,6 +191,24 @@ public class Cache {
                 return -1;
             }
             return 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof EvictionCandidate)) {
+                return false;
+            }
+            EvictionCandidate that = (EvictionCandidate) o;
+            return Objects.equals(expirationTime, that.expirationTime) &&
+                   Objects.equals(key, that.key);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, expirationTime);
         }
     }
 }

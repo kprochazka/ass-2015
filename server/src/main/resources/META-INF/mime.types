@@ -24,3 +24,5 @@ audio/x-wav             wav
 video/mpeg		mpeg mpg mpe
 video/quicktime		qt mov
 video/x-msvideo		avi
+application/zip zip ZIP
+application/x-rar-compressed rar RAR

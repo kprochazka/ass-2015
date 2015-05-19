@@ -4,14 +4,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Map like Server wide context.
+ * Map like Server wide context for sharing server wide information.
  *
  * @author Kamil Prochazka
  */
 public class ServerContext {
 
     private final Map<String, Object> attributes = new ConcurrentHashMap<>();
-
 
     public Object getAttribute(String name) {
         return attributes.get(name);

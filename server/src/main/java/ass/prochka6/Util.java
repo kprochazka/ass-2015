@@ -1,4 +1,4 @@
-package ass.prochka6.http;
+package ass.prochka6;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +9,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
+ * Utility class.
  *
- * @author Kamil Prochazka (Kamil.Prochazka@airbank.cz)
+ * @author Kamil Prochazka
  */
-public class Util {
+public final class Util {
 
     private static final Logger LOG = LoggerFactory.getLogger(Util.class);
+
+    private Util() {
+    }
 
     static void safeClose(Closeable closeable) {
         if (closeable != null) {

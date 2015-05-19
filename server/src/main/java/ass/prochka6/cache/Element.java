@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Element implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private final Object key;
 
     private final Object value;
@@ -30,31 +32,31 @@ public class Element implements Serializable {
     /**
      * The creation time.
      */
-    private transient long creationTime = System.currentTimeMillis();
+    private long creationTime = System.currentTimeMillis();
 
     /**
      * The last access time.
      */
-    private transient long lastAccessTime;
+    private long lastAccessTime;
 
     /**
      * The size in (bytes) of this element)
      */
     private final long size;
 
-    public Element( Object key,  Object value) {
+    public Element(Object key, Object value) {
         this.key = key;
         this.value = value;
         this.size = 0;
     }
 
-    public Element(final Object key, final Object value, final int size) {
+    public Element(final Object key, final Object value, final long size) {
         this.key = key;
         this.value = value;
         this.size = size;
     }
 
-    public Element(final Object key, final Object value, final int size,
+    public Element(final Object key, final Object value, final long size,
                    int timeToLive, int timeToIdle) {
         this(key, value, size);
         this.timeToLive = timeToLive;

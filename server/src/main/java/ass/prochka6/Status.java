@@ -1,4 +1,4 @@
-package ass.prochka6.http;
+package ass.prochka6;
 
 /**
  * Some HTTP response status codes
